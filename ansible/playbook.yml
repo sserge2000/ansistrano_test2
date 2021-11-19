@@ -1,0 +1,184 @@
+---
+- hosts: vb
+
+  vars_files:
+    - ./vars/vault.yml
+    - ./vars/vars.yml
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  environment:
+    SYMFONY_ENV: prod
+
+  pre_tasks:
+    - name: Update APT package manager repository cache
+      become: true
+      apt:
+        update_cache: yes
+
+#    - name: Upgrade installed packages
+#      become: true
+#      apt:
+#        upgrade: safe
+
+  roles:
+    - nginx
+    - redis
+
+  tasks:
+    - ping: ~
+
+    - name: Install cowsay
+      become: true
+      apt:
+        name: cowsay
+
+    - name: Install MySql DB server
+      become: true
+      apt:
+        name: mysql-server
+        state: latest
+
+    - name: "Install ansible python3 mysql dependency"
+      become: true
+      apt:
+        name: python3-mysqldb
+        state: latest
+
+    - name: root@localhost
+      become: true
+      mysql_user:
+        name: root@localhost
+        password: ""
+        priv: '*.*:ALL,GRANT'
+        state: present
+
+    - name: Add PHP 7 PPA repository
+      become: true
+      apt_repository:
+        repo: 'ppa:ondrej/php'
+
+    - name: Install PHP packages
+      become: true
+      apt:
+        name:
+          - php7.1-cli
+          - php7.1-curl
+          - php7.1-fpm
+          - php7.1-intl
+          - php7.1-mysql
+          - php7.1-xml
+        state: latest
+      notify: Restart PHP-FPM
+
+    - name: Set date.timezone for CLI
+      become: true
+      lineinfile:
+        path: /etc/php/7.1/cli/php.ini
+        regexp: "date.timezone ="
+        line: "date.timezone = UTC"
+
+    - name: Set date.timezone for FPM
+      become: true
+      lineinfile:
+        path: /etc/php/7.1/fpm/php.ini
+        regexp: "date.timezone ="
+        line: "date.timezone = UTC"
+      notify: Restart PHP-FPM
+
+    - name: Create project direcotry and set its permissions
+      become: true
+      file:
+        path: "{{ symfony_root_dir }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0775
+      tags:
+        - deploy
+
+    - name: Install low-level utilities
+      become: true
+      apt:
+        name:
+          - zip
+          - unzip
+
+    - name: Check for Composer
+      stat:
+        path: /usr/local/bin/composer
+      register: composer_stat
+      tags:
+        - deploy
+
+    - name: Download Composer
+      script: scripts/install_composer.sh
+      when: not composer_stat.stat.exists
+      tags:
+        - deploy
+
+    - name: Move Composer globally
+      become: true
+      command: mv composer.phar /usr/local/bin/composer
+      when: not composer_stat.stat.exists
+      tags:
+        - deploy
+
+    - name: Set permissions on Composer
+      become: true
+      file:
+        path: /usr/local/bin/composer
+        mode: "a+x"
+      when: not composer_stat.stat.exists
+      tags:
+        - deploy
+
+    - name: Make sure composer is at its latest version
+      composer:
+        working-dir: "{{ symfony_root_dir }}"
+        command: self-update
+      when: composer_stat.stat.exists
+      register: composer_self_update
+      changed_when: composer_self_update.stdout is not search('You are already using')
+      tags:
+        - deploy
+
+    # Node
+    - name: Install NodeJs
+      become: true
+      apt:
+        name: nodejs
+        state: latest
+        update_cache: yes
+
+    # Yarn
+    - name: Add Yarn APT key
+      become: true
+      apt_key:
+        url: 'https://dl.yarnpkg.com/debian/pubkey.gpg'
+        state: present
+
+    - name: Add Yarn to the source lists
+      become: true
+      lineinfile:
+        path: '/etc/apt/sources.list.d/yarn.list'
+        regexp: 'deb https://dl.yarnpkg.com/debian/ stable main'
+        line: 'deb https://dl.yarnpkg.com/debian/ stable main'
+        create: yes
+
+    - name: Install Yarn
+      become: true
+      apt:
+        name: yarn
+        state: latest
+        update_cache: yes
+
+
+
+  handlers:
+    - name: Restart PHP-FPM
+      become: true
+      service:
+        name: php7.1-fpm
+        state: restarted

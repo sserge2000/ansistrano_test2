@@ -19,3 +19,6 @@
 /.vagrant/
 /node_modules/
 /web/build
+
+/.idea/
+/ansible/hosts.ini

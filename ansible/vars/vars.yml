@@ -1,0 +1,12 @@
+---
+project_deploy_dir: /var/www/project
+ansistrano_current_dir: current
+server_document_root: "{{ project_deploy_dir }}/{{ ansistrano_current_dir }}/web"
+
+github_token: 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
+server_name: mootube.l
+symfony_root_dir: "{{ project_deploy_dir }}"
+symfony_var_dir: "{{ symfony_root_dir }}/var"
+symfony_console_path: "{{ symfony_root_dir }}/bin/console"
+symfony_secret: "{{ vault_symfony_secret }}"
+mysql_root_password: ""

@@ -1,0 +1,16 @@
+---
+- name: Install Redis
+  become: true
+  apt:
+    name: redis-server
+    state: latest
+  notify: Restart Redis
+
+- name: set supervised
+  become: true
+  lineinfile:
+    dest: /etc/redis/redis.conf
+    regexp: "^supervised"
+    line: "supervised systemd"
+  notify: Restart Redis
+
