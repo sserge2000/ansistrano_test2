@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "715daa4a63d63007851cb7bcff63afb3",
+    "content-hash": "7e6dbca73de89166aba8fb109c5f4602",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -3076,7 +3076,7 @@
             ],
             "authors": [
                 {
-                    "name": "Fran\u00e7ois Zaninotto"
+                    "name": "François Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",
@@ -3092,12 +3092,12 @@
             "version": "v1.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hautelook/AliceBundle.git",
+                "url": "https://github.com/theofidry/AliceBundle.git",
                 "reference": "058925945bccbc8776725fec9e8557aca9666d9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hautelook/AliceBundle/zipball/058925945bccbc8776725fec9e8557aca9666d9c",
+                "url": "https://api.github.com/repos/theofidry/AliceBundle/zipball/058925945bccbc8776725fec9e8557aca9666d9c",
                 "reference": "058925945bccbc8776725fec9e8557aca9666d9c",
                 "shasum": ""
             },
@@ -3151,7 +3151,7 @@
                     "email": "brensch@gmail.com"
                 },
                 {
-                    "name": "Th\u00e9o FIDRY",
+                    "name": "Théo FIDRY",
                     "email": "theo.fidry@gmail.com",
                     "homepage": "https://github.com/theofidry"
                 }
@@ -3163,6 +3163,15 @@
                 "faker",
                 "orm",
                 "symfony"
+            ],
+            "support": {
+                "source": "https://github.com/theofidry/AliceBundle/tree/v1.4.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/theofidry",
+                    "type": "github"
+                }
             ],
             "time": "2016-11-04T08:48:00+00:00"
         },
@@ -3351,6 +3360,5 @@
         "php": ">=5.5.9"
     },
     "platform-dev": [],
-    "platform-overrides": {},
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

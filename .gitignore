@@ -20,5 +20,5 @@
 /node_modules/
 /web/build
 
-/.idea/
+.idea/
 /ansible/hosts.ini
