@@ -21,7 +21,6 @@
     ansistrano_git_branch: master
     ansistrano_keep_releases: 3
 
-    ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
 
     # Arrays of directories and files to be shared.
     # The following arrays of directories and files will be symlinked to the current release directory after the 'update-code' step and its callbacks
@@ -39,6 +38,9 @@
     ansistrano_shared_paths:
       - var/logs
       - node_modules
+
+    ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/deploy/before-symlink.yml"
+    ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/deploy/after-symlink-shared.yml"
 
   roles:
     - ansistrano.deploy

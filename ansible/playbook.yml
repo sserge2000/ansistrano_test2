@@ -145,6 +145,14 @@
       tags:
         - deploy
 
+    - name: Set GitHub OAuth token for composer
+      composer:
+        command: config
+        arguments: '-g github-oauth.github.com "{{ github_token }}"'
+        working_dir: "/home/{{ ansible_user }}"
+      tags:
+        - github_oauth
+
     # Node
     - name: Install NodeJs
       become: true
