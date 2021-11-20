@@ -85,7 +85,7 @@ class DefaultController extends Controller
      */
     private function countTotalVideoUploads()
     {
-        sleep(1); // simulating a long computation: waiting for 1s
+//        sleep(1); // simulating a long computation: waiting for 1s
 
         $fakedCount = intval(date('Hms') . rand(1, 9));
 
@@ -97,7 +97,7 @@ class DefaultController extends Controller
      */
     private function countTotalVideoViews()
     {
-        sleep(1); // simulating a long computation: waiting for 1s
+//        sleep(1); // simulating a long computation: waiting for 1s
 
         $fakedCount = intval(date('Hms') . rand(1, 9)) * 111;
 
