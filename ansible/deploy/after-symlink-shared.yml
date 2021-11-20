@@ -7,6 +7,8 @@
 - name: Instal Composer dependencies
   composer:
     command: install
+    arguments: --classmap-authoritative
+    optimize_autoloader: yes
     working_dir: '{{ ansistrano_release_path.stdout }}'
 
 - name: Create DB in not exists

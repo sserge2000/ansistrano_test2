@@ -88,6 +88,27 @@
         line: "date.timezone = UTC"
       notify: Restart PHP-FPM
 
+    - name: Increase OPcache limit
+      become: true
+      ini_file:
+        path: /etc/php/7.1/fpm/php.ini
+        section: opcache
+        option: opcache.max_accelerated_files
+        value: 20000
+      notify: Restart PHP-FPM
+
+    - name: Configure the PHP realpath cache
+      become: true
+      ini_file:
+        path: /etc/php/7.1/fpm/php.ini
+        section: PHP
+        option: '{{ item.option }}'
+        value: '{{ item.value }}'
+      notify: Restart PHP-FPM
+      with_items:
+        - { option: 'realpath_cache_size', value: '4096K' }
+        - { option: 'realpath_cache_ttl', value: '600' }
+
     - name: Create project direcotry and set its permissions
       become: true
       file:
