@@ -69,6 +69,7 @@
           - php7.1-intl
           - php7.1-mysql
           - php7.1-xml
+          - php7.1-apcu
         state: latest
       notify: Restart PHP-FPM
 
