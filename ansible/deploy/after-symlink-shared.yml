@@ -38,9 +38,10 @@
   args:
     chdir: '{{ ansistrano_release_path.stdout }}'
 
-- name: Setup directory permissions for var/
+- name: Setup directory permissions for var/logs
+  become: true
   file:
-    path: "{{ release_var_path }}"
+    path: "{{ release_logs_path }}"
     state: directory
     mode: 0777
     recurse: true
